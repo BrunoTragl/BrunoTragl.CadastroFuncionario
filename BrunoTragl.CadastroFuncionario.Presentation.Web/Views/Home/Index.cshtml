@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/styles/home.css" />
+}
+
+<div class="row filtros">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <label class="font-roboto-weight-900-tam-14">Identificação </label>
+    </div>
+    <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12 space-down-1">
+        <input name="pesquisaNome" id="pesquisaNome" class="form-control" placeholder="Nome" />
+    </div>
+    <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12 space-down-1">
+        <input name="pesquisaSobrenome" id="pesquisaSobrenome" class="form-control" placeholder="Sobrenome" />
+    </div>
+    <!-- Cabeçalho -->
+    <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+        <label class="font-roboto-weight-900-tam-14">Idade </label>
+    </div>
+    <div class="col-lg-10 col-md-8 col-sm-8 col-xs-6 filtroHabilidadeCabecalho">
+        <label class="font-roboto-weight-900-tam-14">Habilidades </label>
+    </div>
+    <!-- Campos -->
+    <div class="col-lg-1 col-md-2 col-sm-2 col-xs-2 space-down-1">
+        <input type="text" id="pesquisaIdadeDe" class="form-control pesquisaIdadeDe" placeholder="De" />
+    </div>
+    <div class="col-lg-1 col-md-2 col-sm-2 col-xs-2 space-down-1">
+        <input type="text" id="pesquisaIdadeAte" class="form-control pesquisaIdadeAte" placeholder="Até" />
+    </div>
+
+    <div class="col-lg-10 col-md-8 col-sm-8 col-xs-6 space-down-1 filtroHabilidadeCampos botoesDinamicos"></div>
+
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 filtroHabilidadeCabecalhoIndividual">
+        <label class="font-roboto-weight-900-tam-14">Habilidades </label>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 space-down-1 filtroHabilidadeCamposIndividual botoesDinamicos"></div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 divQtdePaginas">
+        <select name="qtdePorPagina" id="qtdePorPagina" onclick="atualizarPageSize()" class="btnQtdePorPagina pesquisaAlinhadoDireita">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+            <option value="25">25</option>
+            <option value="30">30</option>
+        </select>
+        <label class="labelQtdePaginas">Quantidade por página </label>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <table class="table table-responsive table-bordered">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Sobrenome</th>
+                    <th>Data de Nascimento</th>
+                    <th>Idade</th>
+                    <th>E-mail</th>
+                    <th>Sexo</th>
+                    <th style="width: 200px;">Habilidades</th>
+                    <th>Ativo</th>
+                </tr>
+            </thead>
+            <tbody id="funcionarios"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row resultado">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-left itensDaPagina"></div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center" id="paginacao"></div>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/home.js"></script>
+    <script>
+        var _urlDetalhesFuncinario = '@Url.Action("Detalhes", "Funcionarios")';
+        var _urlHabilidadesUnicas = '@Url.Action("List", "HabilidadesUnicas")';
+    </script>
+}

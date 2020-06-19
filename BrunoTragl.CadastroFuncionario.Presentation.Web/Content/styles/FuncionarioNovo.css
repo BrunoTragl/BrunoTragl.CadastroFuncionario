@@ -1,0 +1,41 @@
+﻿.habilidadeSelecionavel {
+    border-radius: 3px;
+    padding: 4px 6px;
+    padding-right: 9px !important;
+    margin-right: 10px;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    float: left;
+}
+
+    .habilidadeSelecionavel:hover, .habilidadeSelecionavel input {
+        cursor: pointer;
+    }
+
+    .habilidadeSelecionavel input {
+        height: 0px;
+        width: 0px;
+    }
+
+.naoSelecionado {
+    background-color: rgba(109, 109, 109, 0.74);
+    border: solid 1.25px #767676;
+    color: whitesmoke;
+}
+
+.selecionado {
+    background-color: #2a6598;
+    border: solid 1.25px #0a2479;
+    color: whitesmoke;
+}
+
+.btn-gravar {
+    float: right;
+}
+
+.nomeHabilidade {
+    width: 0px;
+    height: 0px;
+    display: none;
+}
+

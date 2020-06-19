@@ -1,0 +1,108 @@
+﻿@model IEnumerable<HabilidadeUnicaViewModel>
+@{
+    ViewBag.Title = "Configurar Habilidades";
+}
+
+@section styles {
+    <link rel="stylesheet" href="~/Content/styles/configuracao.css" />
+}
+
+<div class="row space-down-3">
+    <div class="col-lg-10 col-md-6 col-sm-6 col-xs-10">
+        <p class="font-roboto-weight-900-tam-24">Habilidades existentes</p>
+    </div>
+    @if (TempData.ContainsKey("sucesso"))
+    {
+        if ((bool)TempData["sucesso"])
+        {
+            <div class="col-lg-2 col-md-6 col-sm-6 col-xs-2">
+                <button class="btn btn-info btnNovaHabilidade" data-toggle="modal" data-target="#modalNovaHabilidade"><i class="fa fa-plus"></i></button>
+            </div>
+            <div class="col-lg-4 col-lg-offset-8 col-md-8 col-md-offset-4 col-sm-8 col-sm-offset-4 col-xs-12">
+                <div class="alert alert-success" role="alert">
+                    <strong>Sucesso!</strong> A nova habilidade foi criada.
+                    <div class="fecharAlert" onclick="fecharAlert()">x</div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-2 col-md-6 col-sm-6 col-xs-2">
+                <button class="btn btn-info btnNovaHabilidade" data-toggle="modal" data-target="#modalNovaHabilidade"><i class="fa fa-plus"></i></button>
+            </div>
+            <div class="col-lg-4 col-lg-offset-8 col-md-8 col-md-offset-4 col-sm-8 col-sm-offset-4 col-xs-12">
+                <div class="alert alert-danger" role="alert">
+                    <strong>Opss!</strong> Ocorreu um erro ao criar a habilidade.
+                    <div class="fecharAlert" onclick="fecharAlert()">x</div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-lg-2 col-md-6 col-sm-6 col-xs-2">
+            <button class="btn btn-info btnNovaHabilidade" data-toggle="modal" data-target="#modalNovaHabilidade"><i class="fa fa-plus"></i></button>
+        </div>
+    }
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="habilidades">
+        @foreach (var habilidade in Model)
+        {
+            <div class="quadroHabilidade habilidade" id="@habilidade.Id">
+                @habilidade.Nome
+                <div class="removerHabilidade" onclick="removerHabilidade(@habilidade.Id)">x</div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalNovaHabilidade" tabindex="-1" role="dialog" aria-labelledby="modalLabelNovaHabilidade" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-roboto-weight-900-tam-16" id="modalLabelNovaHabilidade">Nova habilidade</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Post", "HabilidadesUnicas", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            @Html.Label("Habilidade")
+                            @Html.TextBox("Nome", "", new { Class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Adicionar</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript" src="~/Scripts/configuracao.js"></script>
+    <script>
+        var _urlRemoverHabilidade = '@Url.Action("Delete", "HabilidadesUnicas")';
+    </script>
+    @if (TempData.ContainsKey("erro"))
+    {
+        string erro = string.Empty;
+        Exception ex = (Exception)TempData["erro"];
+        erro = ex.Message;
+        if (ex.InnerException != null)
+        {
+            erro += "\nInnerException:";
+            erro += "\n" + ex.InnerException.Message;
+        }
+        <script>
+            console.log('Ocorreu um erro ao atualizar o funcionário: \n @erro');
+        </script>
+    }
+}

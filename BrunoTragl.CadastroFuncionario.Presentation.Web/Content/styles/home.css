@@ -1,0 +1,92 @@
+﻿th {
+    color: whitesmoke;
+    background-color: #2a6598;
+}
+
+tr:hover {
+    background-color: rgba(73, 171, 255, 0.69);
+    cursor: pointer;
+}
+
+.btnHabilidade {
+    margin: 1.5px;
+}
+
+.btnQtdePorPagina {
+    padding: 5px 7px;
+    margin: 10px;
+}
+
+.pesquisaAlinhadoDireita {
+    float: right;
+}
+
+.labelQtdePaginas {
+    position: absolute;
+    right: 85px;
+    top: 15px;
+}
+
+.divQtdePaginas {
+    margin-top: 15px;
+    position: relative;
+}
+
+.filtros {
+    background-color: rgba(213, 208, 208, 0.73);
+    margin: auto;
+    padding: 15px 0px;
+    border-radius: 3px;
+}
+
+.filtroHabilidadeCabecalhoIndividual, .filtroHabilidadeCamposIndividual {
+    display: none;
+}
+
+.filtroHabilidadeCabecalho, .filtroHabilidadeCampos {
+    display: block;
+}
+
+.pesquisaIdadeDe, .pesquisaIdadeAte {
+    float: none !important;
+}
+
+.itensDaPagina {
+    padding-left: 5px !important;
+}
+
+    .itensDaPagina p {
+        text-align: left;
+        margin: 0 0 0px !important;
+        padding-top: 2px;
+        padding-bottom: 2px;
+    }
+
+table {
+    margin-bottom: 0px !important;
+}
+
+.resultado {
+    display: block;
+    background-color: rgba(213, 208, 208, 0.73);
+    color: #222;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media screen and (max-width: 768px) {
+    .filtroHabilidadeCabecalho, .filtroHabilidadeCampos {
+        display: none;
+    }
+
+    .filtroHabilidadeCabecalhoIndividual, .filtroHabilidadeCamposIndividual {
+        display: block;
+    }
+
+    .pesquisaIdadeDe, .pesquisaIdadeAte {
+        float: left !important;
+    }
+}

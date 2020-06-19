@@ -1,0 +1,166 @@
+﻿@model FuncionarioViewModel
+@{
+    ViewBag.Title = "Detalhes do Funcionário";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/Content/styles/detalhes.css" />
+}
+
+@using (Html.BeginForm("Put", "Funcionarios", FormMethod.Post))
+{
+    @Html.HttpMethodOverride(HttpVerbs.Put)
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <p class="font-roboto-weight-900-tam-24">Detalhes do Funcionário</p>
+            <p class="font-roboto-weight-900-tam-16">
+                ID @Html.TextBoxFor(f => f.Id, new { Id = "funcionarioId", ReadOnly = true })  @*<span id="funcionarioId">@Model.Id</span>*@
+                <span class="font-roboto-weight-900-tam-14 funcionarioAtivo">
+                    @Html.CheckBoxFor(f => f.Ativo)
+                    Funcionário ativo
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="row space-down-2">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 space-down-1">
+            @Html.LabelFor(f => f.Nome)
+            @Html.TextBoxFor(f => f.Nome, new { Class = "form-control" })
+            @Html.ValidationMessageFor(f => f.Nome)
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 space-down-1">
+            @Html.LabelFor(f => f.Sobrenome)
+            @Html.TextBoxFor(f => f.Sobrenome, new { Class = "form-control" })
+            @Html.ValidationMessageFor(f => f.Sobrenome)
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 space-down-1">
+            @Html.LabelFor(f => f.Email)
+            @Html.TextBoxFor(f => f.Email, new { Class = "form-control" })
+            @Html.ValidationMessageFor(f => f.Email)
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 space-down-1">
+            @Html.LabelFor(f => f.DataNascimento)
+            @Html.TextBoxFor(f => f.DataNascimento, new { Class = "form-control" })
+            @Html.ValidationMessageFor(f => f.DataNascimento)
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 space-down-1">
+            @Html.LabelFor(f => f.Idade)
+            @Html.TextBoxFor(f => f.Idade, new { Class = "form-control", ReadOnly = true })
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 space-down-1">
+            @Html.LabelFor(f => f.Sexo)
+            @Html.DropDownListFor(f => f.Sexo, new SelectList(Enum.GetValues(typeof(SexoEnum))), new { Class = "form-control" })
+        </div>
+    </div>
+
+    <div class="row panelHabilidades space-down-3">
+        <div class="col-lg-11 col-md-11 col-sm-10 col-xs-10 space-down-1">
+            <p class="font-roboto-weight-900-tam-24">Habilidades</p>
+        </div>
+        <div class="col-lg-1 col-md-1 col-sm-2 col-xs-2 space-down-1">
+            <button type="button" class="btn btn-info btnNovaHabilidade" data-toggle="modal" data-target="#modalNovaHabilidade"><i class="fa fa-plus"></i></button>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 space-down-3" id="habilidades">
+            @foreach (var habilidade in Model.Habilidades)
+            {
+                if (Model.Habilidades.Count() == 1)
+                {
+                    <div class="quadroHabilidade habilidade" id="@habilidade.Id">
+                        @habilidade.Nome
+                    </div>
+                }
+                else
+                {
+                    <div class="quadroHabilidade habilidade" id="@habilidade.Id">
+                        @habilidade.Nome
+                        <div class="removerHabilidade" onclick="removerHabilidade(@habilidade.Id)">x</div>
+                    </div>
+                }
+            }
+        </div>
+        @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <button type="button" class="btn btn-info btnNovaHabilidade" data-toggle="modal" data-target="#modalNovaHabilidade">Nova habilidade</button>
+            </div>*@
+    </div>
+
+    <div class="row space-down-3">
+        @if (TempData.ContainsKey("sucesso"))
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                @if ((bool)TempData["sucesso"])
+                {
+                    <div class="alert alert-success" role="alert">
+                        <strong>Sucesso!</strong> Os dados foram atualizados.
+                        <div class="fecharAlert" onclick="fecharAlert()">x</div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <strong>Opss!</strong> Ocorreu um erro ao atualizar os dados.
+                        <div class="fecharAlert" onclick="fecharAlert()">x</div>
+                    </div>
+                }
+            </div>
+            <div class="col-lg-8 col-md-6 col-sm-12 col-xs-12 space-down-1">
+                <button type="submit" class="btn btn-success btnSalvarDetalhes">Salvar detalhes</button>
+            </div>
+        }
+        else
+        {
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 space-down-1">
+                <button type="submit" class="btn btn-success btnSalvarDetalhes">Salvar detalhes</button>
+            </div>
+        }
+
+    </div>
+}
+<!-- Modal -->
+<div class="modal fade" id="modalNovaHabilidade" tabindex="-1" role="dialog" aria-labelledby="modalLabelNovaHabilidade" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-roboto-weight-900-tam-16" id="modalLabelNovaHabilidade">Nova habilidade</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <p>Selecione uma habilidade:</p>
+                        <select class="form-control habilidadesUnicas" id="habilidadesUnicas"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="adicionarNovaHabilidade()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/detalhes.js"></script>
+    <script>
+        var _urlAdicionarHabilidadeFuncionario = '@Url.Action("Post", "Habilidades")';
+        var _urlRemoverHabilidadeFuncionario = '@Url.Action("Delete", "Habilidades")';
+        var _urlBuscarHabilidadesUnicas = '@Url.Action("List", "HabilidadesUnicas")';
+    </script>
+    @if (TempData.ContainsKey("erro"))
+    {
+        string erro = string.Empty;
+        Exception ex = (Exception)TempData["erro"];
+        erro = ex.Message;
+        if (ex.InnerException != null)
+        {
+            erro += "\nInnerException:";
+            erro += "\n" + ex.InnerException.Message;
+        }
+        <script>
+            console.log('Ocorreu um erro ao atualizar o funcionário: \n @erro');
+        </script>
+    }
+
+}

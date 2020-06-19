@@ -1,0 +1,107 @@
+﻿@model FuncionarioViewModel
+@{
+    ViewBag.Title = "Detalhes do Funcionário";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/Content/styles/FuncionarioNovo.css" />
+}
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <p class="font-roboto-weight-900-tam-24">Novo Funcionário</p>
+    </div>
+</div>
+
+@using (Html.BeginForm("Post", "Funcionarios", FormMethod.Post))
+{
+    <div class="row space-down-2">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 space-down-1">
+            @Html.LabelFor(f => f.Nome)
+            @Html.TextBoxFor(f => f.Nome, new { Class = "form-control" })
+            @Html.ValidationMessageFor(f => f.Nome)
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 space-down-1">
+            @Html.LabelFor(f => f.Sobrenome)
+            @Html.TextBoxFor(f => f.Sobrenome, new { Class = "form-control" })
+            @Html.ValidationMessageFor(f => f.Sobrenome)
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 space-down-1">
+            @Html.LabelFor(f => f.Email)
+            @Html.TextBoxFor(f => f.Email, new { Class = "form-control" })
+            @Html.ValidationMessageFor(f => f.Email)
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 space-down-1">
+            @Html.LabelFor(f => f.DataNascimento)
+            @Html.TextBoxFor(f => f.DataNascimento, new { Class = "form-control" })
+            @Html.ValidationMessageFor(f => f.DataNascimento)
+        </div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 space-down-1">
+            @Html.LabelFor(f => f.Sexo)
+            @Html.DropDownListFor(f => f.Sexo, new SelectList(Enum.GetValues(typeof(SexoEnum))), new { Class = "form-control" })
+            @Html.ValidationMessageFor(f => f.Sexo)
+        </div>
+    </div>
+
+    @*<div class="row space-down-2">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <table class="table table-bordered">
+
+                </table>
+            </div>
+        </div>*@
+
+    <div class="row space-down-2">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <p class="font-roboto-weight-900-tam-24">Habilidades</p>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <p class="font-roboto-weight-400-tam-15">Selecione ao menos uma habilidade relacionada a este funcionário:</p>
+
+            @for (int r = 0; r < Model.Habilidades.Count(); r++)
+            {
+                if (Model.Habilidades[r].Selecionado)
+                {
+                    <div class="habilidadeSelecionavel selecionado" onclick="selecionar(this)">
+                        @Html.CheckBoxFor(i => i.Habilidades[r].Selecionado) @Model.Habilidades[r].Nome
+                    </div>
+                    @Html.TextBoxFor(i => i.Habilidades[r].Nome, new { Class = "nomeHabilidade" })
+                }
+                else
+                {
+                    <div class="habilidadeSelecionavel naoSelecionado" onclick="selecionar(this)">
+                        @Html.CheckBoxFor(i => i.Habilidades[r].Selecionado) @Model.Habilidades[r].Nome
+                    </div>
+                    @Html.TextBoxFor(i => i.Habilidades[r].Nome, new { Class = "nomeHabilidade" })
+                }
+            }
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            @Html.ValidationMessageFor(f => f.Habilidades)
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <button type="submit" class="btn btn-success btn-gravar">Gravar</button>
+        </div>
+    </div>
+}
+
+@section scripts{
+    <script type="text/javascript" src="~/Scripts/novoFuncionario.js"></script>
+    @if (TempData.ContainsKey("erro"))
+    {
+        string erro = string.Empty;
+        Exception ex = (Exception)TempData["erro"];
+        erro = ex.Message;
+        if (ex.InnerException != null)
+        {
+            erro += "\nInnerException:";
+            erro += "\n" + ex.InnerException.Message;
+        }
+        <script>
+            console.log('Ocorreu um erro ao atualizar o funcionário: \n @erro');
+        </script>
+    }
+}
